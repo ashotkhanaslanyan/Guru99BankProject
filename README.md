@@ -19,7 +19,7 @@ git clone https://github.com/ashotkhanaslanyan/Guru99BankProject.git
 ### For Windows, run the setup script
 
 ```ps1
-./setup.ps1
+.\setup.ps1
 ```
 
 ### For Mac and Linux, run the setup script
