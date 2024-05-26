@@ -22,6 +22,12 @@ git clone https://github.com/ashotkhanaslanyan/Guru99BankProject.git
 ./setup.ps1
 ```
 
+### For Mac and Linux, run the setup script
+
+```sh
+./setup.sh
+```
+
 ## Install Dependencies
 
 ### Install the necessary dependencies by running:
