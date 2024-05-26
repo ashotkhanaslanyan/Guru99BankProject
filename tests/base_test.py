@@ -16,7 +16,7 @@ os.environ['WDM_LOG_LEVEL'] = '0'
 
 
 def config():
-    path = Path(__file__).parent / "../data/config.yaml"
+    path = Path(__file__).parent / "../data/config.yml"
     try:
         with open(path) as config_file:
             data = yaml.load(config_file, Loader=yaml.FullLoader)
@@ -30,17 +30,18 @@ class BaseTest:
     @pytest.fixture(autouse=True)
     def init_driver(self):
         warnings.simplefilter("ignore", ResourceWarning)
-        if config()['browser'] == 'chrome':
+        cfg = config()
+        if cfg['browser'] == 'chrome':
             options = webdriver.ChromeOptions()
-            if config()['headless']:
+            if cfg['headless']:
                 options.add_argument('--headless')
                 options.add_argument('--no-sandbox')
                 options.add_argument('--disable-gpu')
                 options.add_argument('--window-size=1920,1080')
             self.driver = webdriver.Chrome(service=ServiceChrome(ChromeDriverManager().install()), options=options)
-        elif config()['browser'] == 'firefox':
+        elif cfg['browser'] == 'firefox':
             options = webdriver.FirefoxOptions()
-            if config()['headless']:
+            if cfg['headless']:
                 options.add_argument('--headless')
                 options.add_argument('--no-sandbox')
                 options.add_argument('--disable-gpu')
@@ -54,5 +55,4 @@ class BaseTest:
         yield self.wait, self.driver
 
         if self.driver is not None:
-            self.driver.close()
             self.driver.quit()
