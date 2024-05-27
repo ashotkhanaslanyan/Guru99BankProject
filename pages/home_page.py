@@ -23,3 +23,7 @@ class HomePage(BasePage):
         self.driver.find_element(*self.repo.EMAIL_INPUT).clear()
         self.driver.find_element(*self.repo.EMAIL_INPUT).send_keys(self.home_page["invalid_email_example"])
 
+    def submit_valid_email(self):
+        self.driver.find_element(*self.repo.EMAIL_INPUT).clear()
+        self.driver.find_element(*self.repo.EMAIL_INPUT).send_keys(self.home_page["valid_email_exaple"])
+        self.driver.find_element(*self.repo.SUBMIT_BTN).click()

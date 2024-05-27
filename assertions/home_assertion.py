@@ -30,7 +30,7 @@ class HomeAssertion(BaseAssertion):
             assert expected_message in actual_message, f"'{expected_message}' not found in blank email message '{actual_message}'"
             self.logger.info(f"Message check passed: '{expected_message}' found.")
         except AssertionError as e:
-            self.logger.error(f"Message check failed: '{expected_message}' not found in blank email message. '{actual_message}'")
+            self.logger.error(f"Message check failed: '{expected_message}' not found in blank email message '{actual_message}'.")
             raise e
     
     def check_invalid_email_message(self):
@@ -42,5 +42,17 @@ class HomeAssertion(BaseAssertion):
             assert expected_message in actual_message, f"'{expected_message}' not found in invalid email message '{actual_message}'"
             self.logger.info(f"Message check passed: '{expected_message}' found.")
         except AssertionError as e:
-            self.logger.error(f"Message check failed: '{expected_message}' not found in invalid email message. '{actual_message}'")
+            self.logger.error(f"Message check failed: '{expected_message}' not found in invalid email message '{actual_message}'.")
+            raise e
+        
+    def check_access_details_header(self):
+        expected_header = self.home_page["access_table_header"]
+        actual_header = self.wait.until(
+            EC.presence_of_element_located(self.repo.ACCESS_HEADER)
+        ).text
+        try:
+            assert expected_header in actual_header, f"'{expected_header}' not found in table header '{actual_header}'"
+            self.logger.info(f"Message check passed: '{expected_header}' found.")
+        except AssertionError as e:
+            self.logger.error(f"Message check failed: '{expected_header}' not found in table header '{actual_header}'.")
             raise e

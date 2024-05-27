@@ -22,3 +22,7 @@ class TestEmail(BaseTest):
     def test_invalid_email_field(self, load_page):
         self.page.enter_invalid_email()
         self.assertion.check_invalid_email_message()
+
+    def test_valid_email_submission(self, load_page):
+        self.page.submit_valid_email()
+        self.assertion.check_access_details_header()

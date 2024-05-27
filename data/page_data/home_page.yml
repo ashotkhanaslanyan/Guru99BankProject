@@ -3,4 +3,7 @@ title: Guru99 Bank Home Page
 empty_email_message: Email ID must not be blank
 invalid_email_message: Email ID is not valid
 
+access_table_header: Access details to demo site
+
 invalid_email_example: thisisnotavalidemail
+valid_email_exaple: a@b.com
