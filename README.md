@@ -16,6 +16,8 @@ git clone https://github.com/ashotkhanaslanyan/Guru99BankProject.git
 
 ## Setup
 
+### Ensure you have python > 3.7 installed
+
 ### For Windows, run the setup script
 
 ```ps1
