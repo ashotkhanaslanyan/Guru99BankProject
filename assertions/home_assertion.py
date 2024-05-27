@@ -1,4 +1,5 @@
 from selenium.webdriver.support import expected_conditions as EC
+
 from data.page_data import parser
 from assertions.base_assertion import BaseAssertion
 from repository.home_page_repo import HomePageRepo

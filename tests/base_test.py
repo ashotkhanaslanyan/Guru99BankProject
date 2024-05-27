@@ -1,7 +1,7 @@
 import os
 import warnings
 from pathlib import Path
-
+import logging
 import pytest
 import yaml
 
@@ -54,9 +54,15 @@ class BaseTest:
         if not os.path.exists('results'):
             os.makedirs('results')
 
+        self.setup_logging(request.node.name)
+
+        self.logger.info("Initialized driver and opened browser.")
+
         yield self.wait, self.driver
 
         self.take_screenshot('after_test', request.node.name)
+
+        self.logger.info("Test completed and browser closed.")
 
         if self.driver is not None:
             self.driver.quit()
@@ -65,6 +71,27 @@ class BaseTest:
         screenshot_name = f'results/{function_name}_{name}.png'
         try:
             self.driver.save_screenshot(screenshot_name)
-            print(f"Screenshot saved as {screenshot_name}")
+            self.logger.info(f"Screenshot saved as {screenshot_name}")
         except Exception as e:
-            print(f"Failed to save screenshot: {e}")
+            self.logger.error(f"Failed to save screenshot: {e}")
+
+    def setup_logging(self, function_name):
+        log_file = f'results/{function_name}.log'
+        logger = logging.getLogger(function_name)
+        logger.setLevel(logging.INFO)
+
+        fh = logging.FileHandler(log_file, mode='w')
+        fh.setLevel(logging.INFO)
+
+        ch = logging.StreamHandler()
+        ch.setLevel(logging.INFO)
+
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        fh.setFormatter(formatter)
+        ch.setFormatter(formatter)
+
+        logger.addHandler(fh)
+        logger.addHandler(ch)
+
+        self.logger = logger
+        self.logger.info(f"Logging setup complete for {function_name}")
