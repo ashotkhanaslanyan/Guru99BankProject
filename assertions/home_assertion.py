@@ -12,23 +12,35 @@ class HomeAssertion(BaseAssertion):
         super().__init__(driver, wait, logger)
 
     def check_title(self):
-        title=self.home_page["title"]
+        expected_title=self.home_page["title"]
         actual_title = self.driver.title
         try:
-            assert title in actual_title, f"'{title}' not found in page title '{actual_title}'"
-            self.logger.info(f"Title check passed: '{title}' is in page title.")
+            assert expected_title in actual_title, f"'{expected_title}' not found in page title '{actual_title}'"
+            self.logger.info(f"Title check passed: '{expected_title}' is in page title.")
         except AssertionError as e:
-            self.logger.error(f"Title check failed: '{title}' not found in page title '{actual_title}'.")
+            self.logger.error(f"Title check failed: '{expected_title}' not found in page title '{actual_title}'.")
             raise e
 
     def check_blank_message(self):
-        message = self.home_page["email_message"]
+        expected_message = self.home_page["empty_email_message"]
         actual_message = self.wait.until(
             EC.presence_of_element_located(self.repo.BLANK_MSG)
             ).text
         try:
-            assert message in actual_message, f"'{message}' not found in email message '{actual_message}'"
-            self.logger.info(f"Message check passed: '{message}' found.")
+            assert expected_message in actual_message, f"'{expected_message}' not found in blank email message '{actual_message}'"
+            self.logger.info(f"Message check passed: '{expected_message}' found.")
         except AssertionError as e:
-            self.logger.error(f"Message check failed: '{message}' not found in email message. '{actual_message}'")
-            raise e 
+            self.logger.error(f"Message check failed: '{expected_message}' not found in blank email message. '{actual_message}'")
+            raise e
+    
+    def check_invalid_email_message(self):
+        expected_message = self.home_page["invalid_email_message"]
+        actual_message = self.wait.until(
+            EC.presence_of_element_located(self.repo.BLANK_MSG)
+        ).text
+        try:
+            assert expected_message in actual_message, f"'{expected_message}' not found in invalid email message '{actual_message}'"
+            self.logger.info(f"Message check passed: '{expected_message}' found.")
+        except AssertionError as e:
+            self.logger.error(f"Message check failed: '{expected_message}' not found in invalid email message. '{actual_message}'")
+            raise e

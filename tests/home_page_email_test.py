@@ -18,3 +18,7 @@ class TestEmail(BaseTest):
     def test_empty_email_submission(self, load_page):
         self.page.submit_empty_email()
         self.assertion.check_blank_message()
+
+    def test_invalid_email_field(self, load_page):
+        self.page.enter_invalid_email()
+        self.assertion.check_invalid_email_message()

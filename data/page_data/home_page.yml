@@ -1,2 +1,6 @@
 title: Guru99 Bank Home Page
-email_message: Email ID must not be blank
+
+empty_email_message: Email ID must not be blank
+invalid_email_message: Email ID is not valid
+
+invalid_email_example: thisisnotavalidemail
