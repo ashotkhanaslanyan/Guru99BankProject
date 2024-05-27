@@ -9,7 +9,7 @@ class TestEmail(BaseTest):
     @pytest.fixture
     def load_page(self):
         self.page = HomePage(self.driver)
-        self.assertion = HomeAssertion(self.driver, self.wait)
+        self.assertion = HomeAssertion(self.driver, self.wait, self.logger)
         self.page.go_to_home_page()
 
     def test_home_page_title(self, load_page):
