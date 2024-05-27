@@ -51,46 +51,57 @@ class BaseTest:
         self.driver.maximize_window()
         self.wait = WebDriverWait(self.driver, 10)
 
-        if not os.path.exists('results'):
-            os.makedirs('results')
+        class_name = request.node.cls.__name__
 
-        self.setup_logging(request.node.name)
+        class_results_dir = f'results/{class_name}'
+        if not os.path.exists(class_results_dir):
+            os.makedirs(class_results_dir)
+
+        self.setup_logging(class_name, request.node.name)
 
         self.logger.info("Initialized driver and opened browser.")
 
         yield self.wait, self.driver
 
-        self.take_screenshot('after_test', request.node.name)
+        self.take_screenshot('after_test', class_name, request.node.name)
 
         self.logger.info("Test completed and browser closed.")
 
         if self.driver is not None:
             self.driver.quit()
 
-    def take_screenshot(self, name, function_name):
-        screenshot_name = f'results/{function_name}_{name}.png'
+    def take_screenshot(self, name, class_name, function_name):
+        screenshot_name = f'results/{class_name}/{function_name}_{name}.png'
         try:
             self.driver.save_screenshot(screenshot_name)
             self.logger.info(f"Screenshot saved as {screenshot_name}")
         except Exception as e:
             self.logger.error(f"Failed to save screenshot: {e}")
 
-    def setup_logging(self, function_name):
-        log_file = f'results/{function_name}.log'
+    def setup_logging(self, class_name, function_name):
+        if not os.path.exists('results'):
+            os.makedirs('results')
+
+        global_log_file = 'results/log.log'
+        global_fh = logging.FileHandler(global_log_file, mode='a')
+        global_fh.setLevel(logging.INFO)
+        global_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        global_fh.setFormatter(global_formatter)
+
         logger = logging.getLogger(function_name)
         logger.setLevel(logging.INFO)
 
-        fh = logging.FileHandler(log_file, mode='w')
-        fh.setLevel(logging.INFO)
+        class_log_file = f'results/{class_name}/{function_name}.log'
+        class_fh = logging.FileHandler(class_log_file, mode='w')
+        class_fh.setLevel(logging.INFO)
+        class_fh.setFormatter(global_formatter)
 
         ch = logging.StreamHandler()
         ch.setLevel(logging.INFO)
+        ch.setFormatter(global_formatter)
 
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        fh.setFormatter(formatter)
-        ch.setFormatter(formatter)
-
-        logger.addHandler(fh)
+        logger.addHandler(global_fh)
+        logger.addHandler(class_fh)
         logger.addHandler(ch)
 
         self.logger = logger
