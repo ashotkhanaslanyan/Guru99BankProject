@@ -114,4 +114,4 @@ class BaseTest:
         logger.addHandler(ch)
 
         self.logger = logger
-        self.logger.info(f"Logging setup complete for {function_name}")
+        self.logger.info(f"Starting {function_name}")
