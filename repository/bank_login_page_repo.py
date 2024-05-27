@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-class LoginPageRepo:
+class BankLoginPageRepo:
     UNAME_INPUT = (By.XPATH, ".//input[@type='text' and @name='uid']")
     PWORD_INPUT = (By.XPATH, ".//input[@type='password' and @name='password']")
     LOGIN_BTN = (By.XPATH, ".//input[@type='submit' and @name='btnLogin]")

@@ -4,7 +4,7 @@ from tests.base_test import BaseTest
 from pages.home_page import HomePage
 from assertions.home_assertion import HomeAssertion
 
-class TestEmail(BaseTest):
+class TestHomePage(BaseTest):
 
     @pytest.fixture
     def load_page(self):

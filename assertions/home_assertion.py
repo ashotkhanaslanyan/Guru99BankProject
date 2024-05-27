@@ -12,7 +12,7 @@ class HomeAssertion(BaseAssertion):
         super().__init__(driver, wait, logger)
 
     def check_title(self):
-        expected_title=self.home_page["title"]
+        expected_title = self.home_page["title"]
         actual_title = self.driver.title
         try:
             assert expected_title in actual_title, f"'{expected_title}' not found in page title '{actual_title}'"

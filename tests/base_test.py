@@ -5,6 +5,7 @@ import shutil
 import logging
 import pytest
 import yaml
+import time
 
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
@@ -17,22 +18,30 @@ os.environ['WDM_LOG_LEVEL'] = '0'
 
 def config():
     path = Path(__file__).parent / "../data/config.yml"
-    try:
-        with open(path) as config_file:
-            data = yaml.load(config_file, Loader=yaml.FullLoader)
-        return data
-    finally:
-        config_file.close()
+    with open(path) as config_file:
+        data = yaml.load(config_file, Loader=yaml.FullLoader)
+    return data
+
+@pytest.fixture(scope='session', autouse=True)
+def clean_results():
+    results_dir = Path('results')
+    log_file = results_dir / 'log.log'
+    
+    if results_dir.exists() and results_dir.is_dir():
+        retries = 3
+        for _ in range(retries):
+            try:
+                if log_file.exists():
+                    os.remove(log_file)
+                break
+            except PermissionError:
+                time.sleep(1)
+        else:
+            raise PermissionError(f"Could not remove {log_file} after {retries} retries")
+        shutil.rmtree(results_dir)
+    results_dir.mkdir(parents=True, exist_ok=True)
 
 class BaseTest:
-
-    @pytest.fixture(scope='session', autouse=True)
-    def clean_results(self):
-        results_dir = Path('results')
-        if results_dir.exists() and results_dir.is_dir():
-            shutil.rmtree(results_dir)
-        results_dir.mkdir(parents=True, exist_ok=True)
-        yield
 
     @pytest.fixture(autouse=True)
     def init_driver(self, request):
