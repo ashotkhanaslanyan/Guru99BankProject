@@ -13,4 +13,7 @@ class BankLoginPage(BasePage):
     def go_to_bank_login_page(self):
         self.go_to_page(self.url)
 
-    
+    def login_with_empty_credentials(self):
+        self.driver.find_element(*self.repo.UNAME_INPUT).clear()
+        self.driver.find_element(*self.repo.PWORD_INPUT).clear()
+        self.driver.find_element(*self.repo.LOGIN_BTN).click()

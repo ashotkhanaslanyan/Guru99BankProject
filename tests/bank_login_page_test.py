@@ -13,3 +13,7 @@ class TestBankLoginPage(BaseTest):
 
     def test_bank_login_page_title(self, load_page):
         self.assertion.check_title()
+
+    def test_bank_login_with_empty_credentials(self, load_page):
+        self.page.login_with_empty_credentials()
+        self.assertion.check_empty_cred_login_alert()
