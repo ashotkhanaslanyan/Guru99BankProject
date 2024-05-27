@@ -1,3 +1,4 @@
+from data.page_data import parser
 from pages.base_page import BasePage
 from repository.bank_login_page_repo import BankLoginPageRepo
 
@@ -7,6 +8,7 @@ class BankLoginPage(BasePage):
 
     def __init__(self, driver):
         self.url = urls()["BankLoginPage"]
+        self.bank_login_page = parser.parser("bank_login_page.yml")
         self.repo = BankLoginPageRepo
         super().__init__(driver)
 
@@ -27,3 +29,17 @@ class BankLoginPage(BasePage):
         self.driver.find_element(*self.repo.PWORD_INPUT).clear()
         self.driver.find_element(*self.repo.PWORD_INPUT).click()
         self.driver.find_element(*self.repo.UNAME_INPUT).click()
+
+    def login_with_invalid_credentials(self):
+        self.driver.find_element(*self.repo.UNAME_INPUT).clear()
+        self.driver.find_element(*self.repo.UNAME_INPUT).send_keys(self.bank_login_page["invalid_username"])
+        self.driver.find_element(*self.repo.PWORD_INPUT).clear()
+        self.driver.find_element(*self.repo.PWORD_INPUT).send_keys(self.bank_login_page["invalid_password"])
+        self.driver.find_element(*self.repo.LOGIN_BTN).click()
+
+    def reset_login_credentials(self):
+        self.driver.find_element(*self.repo.UNAME_INPUT).clear()
+        self.driver.find_element(*self.repo.UNAME_INPUT).send_keys(self.bank_login_page["invalid_username"])
+        self.driver.find_element(*self.repo.PWORD_INPUT).clear()
+        self.driver.find_element(*self.repo.PWORD_INPUT).send_keys(self.bank_login_page["invalid_password"])
+        self.driver.find_element(*self.repo.RESET_BTN).click()

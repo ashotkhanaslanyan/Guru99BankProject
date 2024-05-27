@@ -1,5 +1,8 @@
 title: GTPL Bank Home Page
 
+invalid_username: username
+invalid_password: password
+
 alert_message: User is not valid
 empty_uname_message: User-ID must not be blank
 empty_pword_message: Password must not be blank

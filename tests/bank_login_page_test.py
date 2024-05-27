@@ -16,10 +16,19 @@ class TestBankLoginPage(BaseTest):
 
     def test_bank_login_with_empty_credentials(self, load_page):
         self.page.login_with_empty_credentials()
-        self.assertion.check_empty_cred_login_alert()
+        self.assertion.check_invalid_cred_login_alert()
 
     def test_bank_login_empty_credential_messages(self, load_page):
         self.page.trigger_empty_uname_message()
         self.assertion.check_empty_uname_field_message()
         self.page.trigger_empty_pword_message()
         self.assertion.check_empty_pword_field_message()
+
+    def test_bank_login_with_invalid_credentials(self, load_page):
+        self.page.login_with_invalid_credentials()
+        self.assertion.check_invalid_cred_login_alert()
+
+    def test_bank_login_reset_credentials(self, load_page):
+        self.page.reset_login_credentials()
+        self.assertion.check_uname_field_empty()
+        self.assertion.check_pword_field_empty()

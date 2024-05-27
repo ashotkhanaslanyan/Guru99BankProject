@@ -21,7 +21,7 @@ class BankLoginAssertion(BaseAssertion):
             self.logger.error(f"Title check failed: '{expected_title}' not found in page title '{actual_title}'.")
             raise e
         
-    def check_empty_cred_login_alert(self):
+    def check_invalid_cred_login_alert(self):
         expected_alert_message = self.bank_login_page["alert_message"]
         actual_alert_message = self.wait.until(
             EC.alert_is_present()).text
@@ -56,4 +56,20 @@ class BankLoginAssertion(BaseAssertion):
             self.logger.info(f"Message check passed: '{expected_message}' found.")
         except AssertionError as e:
             self.logger.error(f"Message check failed: '{expected_message}' not found in blank password message '{actual_message}'.")
+            raise e
+        
+    def check_uname_field_empty(self):
+        try:
+            assert self.driver.find_element(*self.repo.UNAME_INPUT).get_attribute("value") == "", "Input field check failed: Username field is not empty."
+            self.logger.info(f"Input field check passed: Username field is empty.")
+        except AssertionError as e:
+            self.logger.error("Input field check failed: Username field is not empty.")
+            raise e
+        
+    def check_pword_field_empty(self):
+        try:
+            assert self.driver.find_element(*self.repo.PWORD_INPUT).get_attribute("value") == "", "Input field check failed: Password field is not empty."
+            self.logger.info(f"Input field check passed: Password field is empty.")
+        except AssertionError as e:
+            self.logger.error("Input field check failed: Password field is not empty.")
             raise e
