@@ -1,6 +1,7 @@
 import os
 import warnings
 from pathlib import Path
+import shutil
 import logging
 import pytest
 import yaml
@@ -24,6 +25,14 @@ def config():
         config_file.close()
 
 class BaseTest:
+
+    @pytest.fixture(scope='session', autouse=True)
+    def clean_results(self):
+        results_dir = Path('results')
+        if results_dir.exists() and results_dir.is_dir():
+            shutil.rmtree(results_dir)
+        results_dir.mkdir(parents=True, exist_ok=True)
+        yield
 
     @pytest.fixture(autouse=True)
     def init_driver(self, request):
