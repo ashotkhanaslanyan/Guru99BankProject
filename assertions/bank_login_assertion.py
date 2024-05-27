@@ -33,3 +33,27 @@ class BankLoginAssertion(BaseAssertion):
             raise e
         self.driver.switch_to.alert.accept()
         self.driver.switch_to.default_content()
+
+    def check_empty_uname_field_message(self):
+        expected_message = self.bank_login_page["empty_uname_message"]
+        actual_message = self.wait.until(
+            EC.presence_of_element_located(self.repo.UNAME_MSG)
+            ).text
+        try:
+            assert expected_message in actual_message, f"'{expected_message}' not found in blank username message '{actual_message}'"
+            self.logger.info(f"Message check passed: '{expected_message}' found.")
+        except AssertionError as e:
+            self.logger.error(f"Message check failed: '{expected_message}' not found in blank username message '{actual_message}'.")
+            raise e
+
+    def check_empty_pword_field_message(self):
+        expected_message = self.bank_login_page["empty_pword_message"]
+        actual_message = self.wait.until(
+            EC.presence_of_element_located(self.repo.PWORD_MSG)
+            ).text
+        try:
+            assert expected_message in actual_message, f"'{expected_message}' not found in blank password message '{actual_message}'"
+            self.logger.info(f"Message check passed: '{expected_message}' found.")
+        except AssertionError as e:
+            self.logger.error(f"Message check failed: '{expected_message}' not found in blank password message '{actual_message}'.")
+            raise e

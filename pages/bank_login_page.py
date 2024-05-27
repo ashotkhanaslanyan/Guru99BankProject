@@ -17,3 +17,13 @@ class BankLoginPage(BasePage):
         self.driver.find_element(*self.repo.UNAME_INPUT).clear()
         self.driver.find_element(*self.repo.PWORD_INPUT).clear()
         self.driver.find_element(*self.repo.LOGIN_BTN).click()
+
+    def trigger_empty_uname_message(self):
+        self.driver.find_element(*self.repo.UNAME_INPUT).clear()
+        self.driver.find_element(*self.repo.UNAME_INPUT).click()
+        self.driver.find_element(*self.repo.PWORD_INPUT).click()
+    
+    def trigger_empty_pword_message(self):
+        self.driver.find_element(*self.repo.PWORD_INPUT).clear()
+        self.driver.find_element(*self.repo.PWORD_INPUT).click()
+        self.driver.find_element(*self.repo.UNAME_INPUT).click()
