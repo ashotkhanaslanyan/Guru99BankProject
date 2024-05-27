@@ -14,7 +14,6 @@ from webdriver_manager.firefox import GeckoDriverManager
 
 os.environ['WDM_LOG_LEVEL'] = '0'
 
-
 def config():
     path = Path(__file__).parent / "../data/config.yml"
     try:
@@ -24,11 +23,10 @@ def config():
     finally:
         config_file.close()
 
-
 class BaseTest:
 
     @pytest.fixture(autouse=True)
-    def init_driver(self):
+    def init_driver(self, request):
         warnings.simplefilter("ignore", ResourceWarning)
         cfg = config()
         if cfg['browser'] == 'chrome':
@@ -52,7 +50,21 @@ class BaseTest:
 
         self.driver.maximize_window()
         self.wait = WebDriverWait(self.driver, 10)
+
+        if not os.path.exists('results'):
+            os.makedirs('results')
+
         yield self.wait, self.driver
+
+        self.take_screenshot('after_test', request.node.name)
 
         if self.driver is not None:
             self.driver.quit()
+
+    def take_screenshot(self, name, function_name):
+        screenshot_name = f'results/{function_name}_{name}.png'
+        try:
+            self.driver.save_screenshot(screenshot_name)
+            print(f"Screenshot saved as {screenshot_name}")
+        except Exception as e:
+            print(f"Failed to save screenshot: {e}")
