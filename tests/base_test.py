@@ -14,6 +14,9 @@ from selenium.webdriver.firefox.service import Service as ServiceFirefox
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
+from tools.get_credentials import get_credentials
+from tools.clear_credentials import clear_credentials
+
 os.environ['WDM_LOG_LEVEL'] = '0'
 
 def config():
@@ -77,11 +80,18 @@ class BaseTest:
 
         self.setup_logging(class_name, request.node.name)
 
+        self.needs_credentials = request.node.get_closest_marker('needs_credentials')
+        if self.needs_credentials:
+            get_credentials(self.logger)
+
         self.logger.info("Initialized driver and opened browser.")
 
         yield self.wait, self.driver
 
         self.take_screenshot('after_test', class_name, request.node.name)
+
+        if self.needs_credentials:
+            clear_credentials(self.logger)
 
         self.logger.info("Test completed and browser closed.")
 

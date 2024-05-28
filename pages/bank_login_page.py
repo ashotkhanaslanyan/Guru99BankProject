@@ -1,4 +1,5 @@
 from data.page_data import parser
+from data import cred_parser
 from pages.base_page import BasePage
 from repository.bank_login_page_repo import BankLoginPageRepo
 
@@ -43,3 +44,11 @@ class BankLoginPage(BasePage):
         self.driver.find_element(*self.repo.PWORD_INPUT).clear()
         self.driver.find_element(*self.repo.PWORD_INPUT).send_keys(self.bank_login_page["invalid_password"])
         self.driver.find_element(*self.repo.RESET_BTN).click()
+
+    def login_with_valid_credentials(self):
+        credentials = cred_parser.credentials()
+        self.driver.find_element(*self.repo.UNAME_INPUT).clear()
+        self.driver.find_element(*self.repo.UNAME_INPUT).send_keys(credentials["username"])
+        self.driver.find_element(*self.repo.PWORD_INPUT).clear()
+        self.driver.find_element(*self.repo.PWORD_INPUT).send_keys(credentials["password"])
+        self.driver.find_element(*self.repo.LOGIN_BTN).click()
